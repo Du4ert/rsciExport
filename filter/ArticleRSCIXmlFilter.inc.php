@@ -306,6 +306,7 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
     {
         $codesNode = $doc->createElement('codes');
         $codesNode->appendChild($doc->createElement('doi', $publication->getStoredPubId('doi')));
+        $codesNode->appendChild($doc->createElement('edn', $publication->getStoredPubId('edn')));
         return $codesNode;
     }
 
