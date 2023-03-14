@@ -173,7 +173,7 @@ class RSCIExportPlugin extends ImportExportPlugin
             $galley = $articleGalleyDAO->getByPublicationId($publication->getId())->next();
             if (isset($galley))
             {
-                $fileName = $galley->getFile()->getName(AppLocale::getPrimaryLocale());
+                $fileName = $galley->getFile()->getData('name', AppLocale::getPrimaryLocale());
                 $articleFilePath = $galley->getFile()->getData('path');
 
                 if ($articleFilePath != "")

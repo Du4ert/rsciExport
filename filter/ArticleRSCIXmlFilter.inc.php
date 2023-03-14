@@ -327,7 +327,7 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
             $locale = $this->_convertISO639ToLocale($lang);
             $keywords = $submissionKeywordsDAO->getKeywords($publication->getId(), array($locale))[$locale];
 
-            foreach ($keywords as $locale=>$keyword)
+            foreach ($keywords as $keyword)
             {
                 $kwdGroup->appendChild($doc->createElement('keyword', htmlentities($keyword, ENT_XML1)));
             }
@@ -530,9 +530,9 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
     protected function _getPublications($issue)
     {
         $submissionsIterator = Services::get('submission')->getMany([
-            'contextId' => $this->_getContext()->getId(),
-            'issueId' => $issue->getId()
-        ]);
+			'contextId' => $issue->getJournalId(),
+			'issueIds' => $issue->getId(),
+		]);
         /** @var Submission[] $publiations */
         $submissions = iterator_to_array($submissionsIterator);
 
