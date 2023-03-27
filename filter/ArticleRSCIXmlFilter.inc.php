@@ -357,7 +357,8 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
             $referenceNode = $doc->createElement('reference');
             $refInfoNode = $doc->createElement('refInfo');
             $refInfoNode->setAttribute('lang', $lang);
-            $textNode = $doc->createElement('text', htmlentities($citation->getRawCitation(), ENT_XML1));
+            $citationClean = strip_tags($citation->getRawCitation());
+            $textNode = $doc->createElement('text', htmlentities($citationClean, ENT_XML1));
             $refInfoNode->appendChild($textNode);
             $referenceNode->appendChild($refInfoNode);
             $referencesNode->appendChild($referenceNode);
@@ -426,7 +427,8 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
      */
     protected function _parseAffiliation($affiliationStr)
     {
-        $affiliationsStr = explode(';', $affiliationStr);
+        // $affiliationsStr = explode(';', $affiliationStr);
+        $affiliationsStr = explode('/', $affiliationStr);
 
         $organizations = array();
         $addresses = array();
