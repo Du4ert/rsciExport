@@ -139,8 +139,6 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
     protected function _createArticlesNode($doc, $issue, $langs)
     {
         $articlesNode = $doc->createElement('articles');
-//        $publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-//        $publishedArticles = $publishedArticleDao->getPublishedArticles($issue->getId());
         $publications = $this->_getPublications($issue);
         $publications = $this->_sortPublicationsByPages($publications);
         $lastSectionId = null;
@@ -383,11 +381,7 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
         $context = $this->_getContext();
         /** @var Request $request */
         $request = Registry::get('request', false);
-        $publicPublicationId = $publication->getStoredPubId('publisher-id');        // TODO: check.
-        if (!empty($publicPublicationId))
-            $bestId = $publicPublicationId;
-        else
-            $bestId = $publication->getId();
+        $bestId = $publication->getData('submissionId');
 
         $resourceURL = $request->url($context->getPath(), 'article', 'view', $bestId, null, null, true);
         $furlNode = $doc->createElement('furl', $resourceURL);
@@ -505,11 +499,6 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
     protected function _getIssuePages($issue)
     {
         $publications = $this->_getPublications($issue);
-//        $submissionDao = Application::getSubmissionDAO();
-//        $publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-//
-//        $publishedArticles = $publishedArticleDao->getPublishedArticles($issue->getId());
-
         $startingPages = array();
         $endingPages = array();
 
@@ -547,12 +536,6 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
         }
 
         return $publications;
-
-//        $publicationsIterator = Services::get('publication')->getMany([
-//            'contextId' => $this->_getContext()->getId(),
-//            'issueId' => $issue->getId()
-//        ]);
-//        return iterator_to_array($publicationsIterator);
     }
 
     /**
