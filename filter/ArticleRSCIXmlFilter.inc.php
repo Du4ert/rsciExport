@@ -202,6 +202,7 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
         $articleNode->appendChild($this->_createCodesNode($doc, $publication));
         $articleNode->appendChild($this->_createKeywordsNode($doc, $publication, $langs));
         $articleNode->appendChild($this->_createReferencesNode($doc, $publication));
+        $articleNode->appendChild($this->_createFundingsNode($doc, $publication, $langs));
         $articleNode->appendChild($this->_createFilesNode($doc, $publication));
 
         return $articleNode;
@@ -293,6 +294,23 @@ class ArticleRSCIXmlFilter extends PersistableFilter {
         }
 
         return $abstractsNode;
+    }
+
+
+    protected function _createFundingsNode($doc, $publication, $langs)
+    {
+        $fundingsNode = $doc->createElement('fundings');
+
+        foreach($langs as $lang)
+        {
+            $locale = $this->_convertISO639ToLocale($lang);
+
+            $fundingNode = $doc->createElement('funding', htmlentities(strip_tags($publication->getData('funding', $locale)), ENT_XML1));
+            $fundingNode->setAttribute('lang', $lang);
+            $fundingsNode->appendChild($fundingNode);
+        }
+
+        return $fundingsNode;
     }
 
     /**
